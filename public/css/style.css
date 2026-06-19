@@ -575,6 +575,41 @@ body {
 .compare-item button:hover { color: #111; }
 [data-theme="dark"] .compare-item button:hover { color: #fff; }
 
+/* GOLD WINNER INDICATORS */
+.compare-best {
+  background: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(247,231,169,0.12)) !important;
+  position: relative;
+}
+.compare-best::after {
+  content: '✓ Best';
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #D4AF37;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: rgba(255,255,255,0.9);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+[data-theme="dark"] .compare-best::after {
+  background: rgba(20,20,20,0.9);
+}
+
+/* GOLD SHIMMER */
+.gold-shimmer {
+  background: linear-gradient(135deg, rgba(212,175,55,0.06) 0%, rgba(247,231,169,0.12) 50%, rgba(212,175,55,0.06) 100%);
+  background-size: 200% 200%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 /* COMPARE PAGE */
 .compare-layout { display: grid; grid-template-columns: 280px 1fr; gap: 2.5rem; margin-top: 2rem; }
 

@@ -105,11 +105,11 @@ app.get('/device/:id', (req, res) => {
 
 app.get('/compare', (req, res) => {
   const ids = req.query.ids ? req.query.ids.split(',').map(Number).filter(Boolean) : [];
-  if (ids.length < 2 || ids.length > 4) {
+  if (ids.length < 2 || ids.length > 6) {
     res.render('compare', {
       devices: [],
       categories: devicesData.categories,
-      error: 'Select 2-4 devices to compare'
+      error: 'Select 2-6 devices to compare'
     });
     return;
   }
@@ -117,6 +117,26 @@ app.get('/compare', (req, res) => {
   if (devices.length < 2) {
     res.render('compare', { devices: [], categories: devicesData.categories, error: 'Invalid device selection' });
     return;
+  }
+  // Calculate winner for each spec key
+  var winners = {};
+  if (devices.length >= 2) {
+    var allKeys = Object.keys(devices[0].specs);
+    allKeys.forEach(function(key) {
+      var vals = devices.map(function(d) { return d.specs[key]; });
+      // Find best numeric value per spec
+      var nums = vals.map(function(v) {
+        var parsed = parseFloat(String(v).replace(/[^0-9.]/g, ''));
+        return isNaN(parsed) ? -1 : parsed;
+      });
+      if (nums.some(function(n) { return n >= 0; })) {
+        var bestIdx = nums.indexOf(Math.max.apply(null, nums));
+        var worstIdx = nums.indexOf(Math.min.apply(null, nums));
+        if (bestIdx >= 0 && bestIdx !== worstIdx) {
+          winners[key] = { bestIdx: bestIdx };
+        }
+      }
+    });
   }
   res.render('compare', { devices, categories: devicesData.categories, error: null });
 });
