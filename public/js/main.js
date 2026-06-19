@@ -1,3 +1,29 @@
+// Theme toggle
+function initTheme() {
+  var saved = localStorage.getItem('theme');
+  var theme = saved || 'light';
+  document.documentElement.setAttribute('data-theme', theme);
+  updateThemeUI(theme);
+}
+
+function updateThemeUI(theme) {
+  var options = document.querySelectorAll('.theme-toggle-option');
+  options.forEach(function(opt) {
+    opt.classList.toggle('active', opt.getAttribute('data-mode') === theme);
+  });
+}
+
+document.getElementById('themeToggle').addEventListener('click', function(e) {
+  var option = e.target.closest('.theme-toggle-option');
+  if (!option) return;
+  var mode = option.getAttribute('data-mode');
+  document.documentElement.setAttribute('data-theme', mode);
+  localStorage.setItem('theme', mode);
+  updateThemeUI(mode);
+});
+
+initTheme();
+
 // Global compare state
 var compareList = [];
 
